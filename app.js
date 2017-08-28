@@ -21,10 +21,12 @@ let text =
 测试
 `
 memobird.init()
-.then(() => memobird.print(text))
+//.then(() => memobird.printText(text))
+.then(res => memobird.printImg('./images/GitHub-Mark.png'))
 .then( res => memobird.status(res.printcontentid, 3000))
 .then( res => { console.log(res.printflag === 1 ? '打印完成' : '打印未完成') })
 .catch((err) => { console.log(err) })
+
 
 
 

@@ -3,6 +3,7 @@ const axios = require('axios')
 const moment = require('moment')
 const iconv = require('iconv-lite')
 const gm = require('gm')
+const fs = require('fs')
 
 class Memobird {
     constructor (userInfo) {
@@ -58,20 +59,37 @@ class Memobird {
         return await this.getData(url.print, print)
     }
     //打印图片功能
-    async printImg (url) {
-        console.log('print开始')
+    async printImg (path) {
+        console.log('printImg开始')
         let Content = 
-            `来自node平台
-            ${content}
-            ${moment().format('YYYY-MM-DD HH:mm:ss')}`
+            `T:${iconv.encode('来自node平台', 'gbk').toString('base64')}|${await this.encodeImg(path)}|T:${iconv.encode(moment().format('YYYY-MM-DD HH:mm:ss'), 'gbk').toString('base64')}`
+            console.log(Content)
         let print = {
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
             ak: this.config.ak,
             memobirdID: this.config.memobirdID,
             userID: this.initRes.showapi_userid,
-            printcontent: `T:${iconv.encode(Content, 'gbk').toString('base64')}`
+            printcontent: Content
         }
         return await this.getData(url.print, print)
+    }
+    encodeImg (path) {
+        return new Promise((resolve, reject) => {
+            function data2base64(data) {
+                console.log(data)
+                gm(data).resize(384).flip().type('Bilevel').colors(2).toBuffer('bmp', (error, buffer) => {
+                  if (error) {
+                    reject(error);
+                  } else {
+                    resolve(`P:${buffer.toString('base64')}`);
+                  }
+                });
+            }
+            fs.readFile(path, (err, data) => {
+                if (err) throw err;
+                data2base64(data);
+              });
+        })
     }
     //检测是否打印完成
     async status (id, time) {
