@@ -5,9 +5,28 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const moment = require('moment')
+const axios = require('axios')
+const config= require('./config')
+const Memobird = require('./memobird')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
+
+const memobird = new Memobird({ak: '786f78a1ea2f43beba7ba2b68949ae34',memobirdID: '290c93e55b890d8a',useridentifying: '929019'})
+let text = 
+`
+多行
+文本
+测试
+`
+memobird.init()
+.then(() => memobird.print(text))
+.then( res => memobird.status(res.printcontentid, 3000))
+.then( res => { console.log(res.printflag === 1 ? '打印完成' : '打印未完成') })
+.catch((err) => { console.log(err) })
+
+
 
 // error handler
 onerror(app)
