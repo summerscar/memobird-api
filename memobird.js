@@ -30,7 +30,6 @@ class Memobird {
     }
     //延时
     timeOut (time = 3000) {
-        console.log(`延时${time}ms`)
         return new Promise((resolve, reject) => {
             let timer = setTimeout(() => {
                 resolve('延时完成')
@@ -44,7 +43,7 @@ class Memobird {
     }
     //打印文字功能
     async printText (content) {
-        console.log('print开始')
+        console.log('printText开始')
         let Content = 
             `来自node平台
             ${content}
@@ -63,7 +62,6 @@ class Memobird {
         console.log('printImg开始')
         let Content = 
             `T:${iconv.encode('来自node平台', 'gbk').toString('base64')}|${await this.encodeImg(path)}|T:${iconv.encode(moment().format('YYYY-MM-DD HH:mm:ss'), 'gbk').toString('base64')}`
-            console.log(Content)
         let print = {
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
             ak: this.config.ak,
@@ -75,32 +73,35 @@ class Memobird {
     }
     encodeImg (path) {
         return new Promise((resolve, reject) => {
-            function data2base64(data) {
-                console.log(data)
-                gm(data).resize(384).flip().type('Bilevel').colors(2).toBuffer('bmp', (error, buffer) => {
-                  if (error) {
-                    reject(error);
-                  } else {
-                    resolve(`P:${buffer.toString('base64')}`);
-                  }
-                });
-            }
-            fs.readFile(path, (err, data) => {
-                if (err) throw err;
-                data2base64(data);
-              });
+            gm(path).resize(384).flip().type('Bilevel').colors(2).toBuffer('bmp', (error, buffer) => {
+                if (error) {
+                reject(error);
+                } else {
+                resolve(`P:${buffer.toString('base64')}`);
+                }
+            });
         })
     }
     //检测是否打印完成
     async status (id, time) {
-         console.log('开始检测')
+        let times = 1
+        let printflag = 0
         let status = {
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
             ak: this.config.ak,
             printcontentid: id
         }
-        console.log(await this.timeOut(time))
-        return await this.getData(url.status, status)
+        do {
+            await this.timeOut(time)
+            let res = await this.getData(url.status, status)
+            printflag = res.printflag
+            console.log(`开始检测 第${times}次  延时${time}ms  ${printflag === 1 ? '打印完成' : '打印未完成'}`)
+            times++;
+            if(times === 6)
+                break
+        }
+        while (printflag !== 1);
+        console.log()
     }  
 }
 module.exports = Memobird
