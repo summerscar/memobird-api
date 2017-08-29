@@ -8,7 +8,7 @@ router.get('/', async (ctx, next) => {
 })
 
 router.post('/printText', async (ctx, next) => {
-  const memobird = new Memobird({ak: '',memobirdID: '',useridentifying: ''})
+  const memobird = new Memobird({ak: '786f78a1ea2f43beba7ba2b68949ae34',memobirdID: '290c93e55b890d8a',useridentifying: '929019'})
   ctx.body = {code:1}
   memobird.init()
   .then(() => memobird.printText(ctx.request.body.content))
@@ -23,7 +23,7 @@ router.post('/printText', async (ctx, next) => {
 })
 
 router.post('/printImg', async (ctx, next) => {
-  const memobird = new Memobird({ak: '',memobirdID: '',useridentifying: ''})
+  const memobird = new Memobird({ak: '786f78a1ea2f43beba7ba2b68949ae34',memobirdID: '290c93e55b890d8a',useridentifying: '929019'})
   ctx.body = {code:1}
   memobird.init() 
   .then( res => memobird.printImg(ctx.request.body.content))
