@@ -38,8 +38,7 @@ class Memobird {
     }
     //初始化，绑定用户
     async init () {
-        try { this.initRes = await this.getData(url.account, this.config) } 
-        catch (err) { console.log(err) }
+        this.initRes = await this.getData(url.account, this.config) 
     }
     //打印文字功能
     async printText (content) {
@@ -61,13 +60,40 @@ class Memobird {
     async printImg (path) {
         console.log('printImg开始')
         let Content = 
-            `T:${iconv.encode('来自node平台', 'gbk').toString('base64')}|${await this.encodeImg(path)}|T:${iconv.encode(moment().format('YYYY-MM-DD HH:mm:ss'), 'gbk').toString('base64')}`
+            `T:${iconv.encode('来自node平台\n', 'gbk').toString('base64')}|${await this.encodeImg(path)}|T:${iconv.encode(moment().format('YYYY-MM-DD HH:mm:ss'), 'gbk').toString('base64')}`
         let print = {
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
             ak: this.config.ak,
             memobirdID: this.config.memobirdID,
             userID: this.initRes.showapi_userid,
             printcontent: Content
+        }
+        return await this.getData(url.print, print)
+    }
+    //打印混合内容
+    async printMutilContent (arr) {
+        arr = arr.filter((item) => {
+            return item.content !== '' && (item.type === 'text' || item.type === 'image')
+        })
+        let tmpArr = []
+        for(let i = 0;i < arr.length; i++) {
+            if (arr[i].type === 'text') {
+                tmpArr.push('T:'+iconv.encode(arr[i].content+'\n', 'gbk').toString('base64'))
+            }
+            if (arr[i].type === 'image') {
+                tmpArr.push(await this.encodeImg(arr[i].content))
+            }
+        }
+        tmpArr.unshift('T:'+iconv.encode('来自node平台'+'\n', 'gbk').toString('base64'))
+        tmpArr.push('T:'+iconv.encode(moment().format('YYYY-MM-DD HH:mm:ss'), 'gbk').toString('base64'))
+        let data = tmpArr.join('|')
+        console.log(data)
+        let print = {
+            timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
+            ak: this.config.ak,
+            memobirdID: this.config.memobirdID,
+            userID: this.initRes.showapi_userid,
+            printcontent: data
         }
         return await this.getData(url.print, print)
     }

@@ -37,4 +37,18 @@ router.post('/printImg', async (ctx, next) => {
   })
 })
 
+router.post('/printMutilContent', async (ctx, next) => {
+  const memobird = new Memobird({ak: '786f78a1ea2f43beba7ba2b68949ae34',memobirdID: '290c93e55b890d8a',useridentifying: '929019'})
+  memobird.init()
+  .then(() => memobird.printMutilContent(ctx.request.body.content))
+  .then( res => memobird.status(res.printcontentid, 3000))
+  .then(printflag => {
+    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成')
+  })
+  .catch((err) => { 
+    console.log(err) 
+    ctx.body = err
+  })
+})
+
 module.exports = router
