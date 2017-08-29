@@ -101,7 +101,7 @@ class Memobird {
                 break
         }
         while (printflag !== 1);
-        console.log()
+        return printflag
     }  
 }
 module.exports = Memobird

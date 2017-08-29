@@ -13,18 +13,7 @@ const Memobird = require('./memobird')
 const index = require('./routes/index')
 const users = require('./routes/users')
 
-const memobird = new Memobird({ak: '786f78a1ea2f43beba7ba2b68949ae34',memobirdID: '290c93e55b890d8a',useridentifying: '929019'})
-let text = 
-`
-多行
-文本
-测试
-`
-memobird.init()
-.then(() => memobird.printText(text))
-.then(res => memobird.printImg('http://wx4.sinaimg.cn/mw690/006Flhywly1fizklxylh3j30gs0e3n52.jpg'))
-.then( res => memobird.status(res.printcontentid, 3000))
-.catch((err) => { console.log(err) })
+
 
 
 // error handler
