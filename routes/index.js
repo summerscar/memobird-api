@@ -40,6 +40,7 @@ router.post('/printImg', async (ctx, next) => {
 
 router.post('/printMutilContent', async (ctx, next) => {
   const memobird = new Memobird({ak: config.ak,memobirdID: config.memobirdID,useridentifying: config.useridentifying})
+  ctx.body = {code:1}
   memobird.init()
   .then(() => memobird.printMutilContent(ctx.request.body.content))
   .then( res => memobird.status(res.printcontentid, 3000))

@@ -87,7 +87,6 @@ class Memobird {
         tmpArr.unshift('T:'+iconv.encode('来自node平台'+'\n', 'gbk').toString('base64'))
         tmpArr.push('T:'+iconv.encode(moment().format('YYYY-MM-DD HH:mm:ss'), 'gbk').toString('base64'))
         let data = tmpArr.join('|')
-        console.log(data)
         let print = {
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
             ak: this.config.ak,
