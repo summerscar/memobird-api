@@ -1,5 +1,6 @@
 const router = require('koa-router')()
 const Memobird = require('../memobird')
+const config = require('../config')
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -8,7 +9,7 @@ router.get('/', async (ctx, next) => {
 })
 
 router.post('/printText', async (ctx, next) => {
-  const memobird = new Memobird({ak: '',memobirdID: '',useridentifying: ''})
+  const memobird = new Memobird({ak: config.ak,memobirdID: config.memobirdID,useridentifying: config.useridentifying})
   ctx.body = {code:1}
   memobird.init()
   .then(() => memobird.printText(ctx.request.body.content))
@@ -23,7 +24,7 @@ router.post('/printText', async (ctx, next) => {
 })
 
 router.post('/printImg', async (ctx, next) => {
-  const memobird = new Memobird({ak: '',memobirdID: '',useridentifying: ''})
+  const memobird = new Memobird({ak: config.ak,memobirdID: config.memobirdID,useridentifying: config.useridentifying})
   ctx.body = {code:1}
   memobird.init() 
   .then( res => memobird.printImg(ctx.request.body.content))
@@ -38,7 +39,8 @@ router.post('/printImg', async (ctx, next) => {
 })
 
 router.post('/printMutilContent', async (ctx, next) => {
-  const memobird = new Memobird({ak: '',memobirdID: '',useridentifying: ''})
+  const memobird = new Memobird({ak: config.ak,memobirdID: config.memobirdID,useridentifying: config.useridentifying})
+  ctx.body = {code:1}
   memobird.init()
   .then(() => memobird.printMutilContent(ctx.request.body.content))
   .then( res => memobird.status(res.printcontentid, 3000))
