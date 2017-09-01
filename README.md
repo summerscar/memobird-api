@@ -40,7 +40,7 @@ PS: ak,设备id，还一个userID(这个不清楚什么意思，我直接填的�
     ```js
     {content: [{type:'text',content:'需打印的字符'},{type:'image',content:'图片地址'}]}
     ```
->本机运行的话ip就是127.0.0.1,如果调用了没反应检查下后台的console.log
+>本机调用的话ip就是127.0.0.1/localhost,如果调用了没反应检查下后台的console.log
 
 ## 推荐的使用方法
 
@@ -63,15 +63,13 @@ PS: ak,设备id，还一个userID(这个不清楚什么意思，我直接填的�
 
 ```JavaScript
 const memobird = new Memobird({ak: config.ak,memobirdID: config.memobirdID,useridentifying: config.useridentifying})
-ctx.body = {code:1}
 memobird.init()
 .then(() => memobird.printText(ctx.request.body.content))
 .then( res => memobird.status(res.printcontentid, 3000))
 .then(printflag => {
 console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成')
 })
-.catch((err) => { 
-console.log(err) 
-ctx.body = err
+.catch((err) => {
+console.log(err)
 })
 ```

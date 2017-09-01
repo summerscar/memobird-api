@@ -1,6 +1,7 @@
 const router = require('koa-router')()
 const Memobird = require('../memobird')
 const config = require('../config')
+const moment = require('moment')
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -15,11 +16,10 @@ router.post('/printText', async (ctx, next) => {
   .then(() => memobird.printText(ctx.request.body.content))
   .then( res => memobird.status(res.printcontentid, 3000))
   .then(printflag => {
-    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成')
+    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成', moment().format('YYYY-MM-DD HH:mm:ss'))
   })
   .catch((err) => { 
     console.log(err) 
-    ctx.body = err
   })
 })
 
@@ -30,11 +30,10 @@ router.post('/printImg', async (ctx, next) => {
   .then( res => memobird.printImg(ctx.request.body.content))
   .then( res => memobird.status(res.printcontentid, 3000))
   .then(printflag => {
-    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成')
+    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成', moment().format('YYYY-MM-DD HH:mm:ss'))
   })
   .catch((err) => { 
     console.log(err) 
-    ctx.body = err
   })
 })
 
@@ -45,11 +44,10 @@ router.post('/printMutilContent', async (ctx, next) => {
   .then(() => memobird.printMutilContent(ctx.request.body.content))
   .then( res => memobird.status(res.printcontentid, 3000))
   .then(printflag => {
-    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成')
+    console.log('检测完成',printflag === 1 ? '打印完成' : '打印未完成', moment().format('YYYY-MM-DD HH:mm:ss'))
   })
   .catch((err) => { 
     console.log(err) 
-    ctx.body = err
   })
 })
 
