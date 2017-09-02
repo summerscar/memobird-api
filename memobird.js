@@ -44,9 +44,9 @@ class Memobird {
     async printText (content) {
         console.log('printText开始')
         let Content = 
-            `来自node平台
-            ${content}
-            ${moment().format('YYYY-MM-DD HH:mm:ss')}`
+`来自node平台
+${content}
+${moment().format('YYYY-MM-DD HH:mm:ss')}`
         let print = {
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
             ak: this.config.ak,
