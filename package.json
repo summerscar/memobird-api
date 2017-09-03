@@ -24,7 +24,8 @@
     "koa-static": "^3.0.0",
     "koa-views": "^5.2.1",
     "moment": "^2.18.1",
-    "pug": "^2.0.0-rc.1"
+    "pug": "^2.0.0-rc.1",
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"
