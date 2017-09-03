@@ -4,6 +4,7 @@ const moment = require('moment')
 const iconv = require('iconv-lite')
 const gm = require('gm')
 const fs = require('fs')
+const request = require('request');
 
 class Memobird {
     constructor (userInfo) {
@@ -98,7 +99,8 @@ ${moment().format('YYYY-MM-DD HH:mm:ss')}`
     }
     encodeImg (path) {
         return new Promise((resolve, reject) => {
-            gm(path).resize(384).flip().type('Bilevel').colors(2).toBuffer('bmp', (error, buffer) => {
+            let url = path
+            gm(request(url)).resize(384).flip().type('Bilevel').colors(2).toBuffer('bmp', (error, buffer) => {
                 if (error) {
                 reject(error);
                 } else {
